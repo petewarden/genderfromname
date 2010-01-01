@@ -1,0 +1,61 @@
+GenderFromName version 0.30 (PHP port)
+================
+
+NAME
+
+GenderFromName - Guess the gender of an American first name.
+
+SYNOPSIS
+
+    require_once('genderfromname.php');
+
+    print gender("Jon");    // prints 'm'
+
+DESCRIPTION
+
+This module provides gender(), which takes a name and returns one of
+three values: 'm' for male, 'f' for female, or undef for unknown.
+
+INSTALLATION
+
+To install this module:
+
+    Copy genderfromname.php to an accessible include directory
+
+DEPENDENCIES
+
+This module optionally requires:
+
+    The doublemetaphone PECL module at
+    http://svn.php.net/viewvc/pecl/doublemetaphone/
+
+CHANGES
+
+This was originally a Perl module available at http://search.cpan.org/~edaly/Text-GenderFromName-0.32/GenderFromName.pm
+I've done a very mechanical port to PHP, so it's very non-idiomatic.
+
+Version 0.30 is a significant departure from previous versions. By
+default, version 0.30 uses the U.S. Social Security Administration's
+"Most Popular Names of the 1980's" list of 1001 male first names and
+1013 female first names. See CAVEATS in the pod documentation for
+details on this list.
+
+Version 0.30 also allows for arbitrary female and male hashed lists to
+be provided at run-time, and includes several built-ins to provide
+matches based on exclusivity, weight, metaphones, and both version
+0.20 and version 0.10 regexp-style matching. The user can also specify
+additional match subroutines and change the match order at run-time.
+
+AUTHOR
+
+Originally by Jon Orwant <orwant@readable.com>, v0.30 by Eamon Daly
+<eamon@eamondaly.com>.
+
+Ported to PHP by Pete Warden <pete@petewarden.com>
+
+This is an adaptation of an 8/91 awk script by Scott Pakin in the
+December 91 issue of Computer Language Monthly.
+
+Small contributions by Andrew Langmead and John Strickler.  Thanks to
+Bob Baldwin, Matt Bishop, Daniel Klein, and the U.S. SSA for their
+lists of names.

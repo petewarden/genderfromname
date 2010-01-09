@@ -40,16 +40,19 @@ if ($name!='') {
 
     $nameparts = explode(' ', $name);
     $firstname = $nameparts[0];
-    $gender = gender($firstname, $strictness);
+    $result = gender($firstname, $strictness);
 
-    if (isset($gender))
+    if (isset($result))
     {
+        $gender = $result['gender'];
+        $confidence = $result['confidence'];
+    
         if ($gender==='f')
             $gendername = 'female';
         else
             $gendername = 'male';
     
-        print "GenderFromName guesses that '$name' is $gendername"; 
+        print "GenderFromName guesses that '$name' is $gendername, with confidence of $confidence (0 is most confident)"; 
     }
     else
     {

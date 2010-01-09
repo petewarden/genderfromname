@@ -71,10 +71,10 @@ function print_result($testname, $name, $result, $expected)
 {
     if (isset($result))
     {
-        if ($result!==$expected)
-            print "ERROR: $testname produced '$result' for $name, expected '$expected'<br>";
+        if ($result['gender']!==$expected)
+            print "ERROR: $testname produced '{$result['gender']}' for $name, expected '$expected'<br>";
         else
-            print "SUCCESS: $testname produced '$result' for $name<br>";
+            print "SUCCESS: $testname produced '{$result['gender']}' for $name<br>";
     }
     else
     {

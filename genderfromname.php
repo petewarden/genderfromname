@@ -87,11 +87,16 @@ function gender($name, $looseness=1) {
         if (isset($gender))
             break;
     }
+    
+    $confidence = $i;
 
     if ($DEBUG)
         error_log($DEBUG_MSG);
 
-    return $gender;
+    if (!isset($gender))
+        return null;
+    else
+        return array('gender' => $gender, 'confidence' => $confidence);
 }
 
 function one_only($name) {

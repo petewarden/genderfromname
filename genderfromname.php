@@ -22,14 +22,12 @@ $MATCH_LIST = array(
     'v1_rules'
 );
 
-if (!is_callable('double_metaphone'))
-{
-    foreach ($MATCH_LIST as $index => $function)
-    {
-        if (preg_match('/metaphone/', $function))
-            unset($MATCH_LIST[$index]);
-    }
-}
+// Use the double_metaphone module if it's available, or fall back to the
+// standard metaphone() PHP call if not
+if (is_callable('double_metaphone'))
+    $metaphone_function = 'double_metaphone';
+else
+    $metaphone_function = 'metaphone';
 
 $DEBUG_MSG = '';
 
@@ -148,12 +146,13 @@ function one_only_metaphone($name) {
     global $DEBUG_MSG;
     global $Males;
     global $Females;
+    global $metaphone_function;
 
     $gender = null;
 
     // Match one list only, use DoubleMetaphone
 
-    $meta_name = double_metaphone($name);
+    $meta_name = $metaphone_function($name);
     $metaphone_hit = '';
 
     // Pete- Changed the original Perl code which did a copy of the name
@@ -169,7 +168,7 @@ function one_only_metaphone($name) {
         if ($female_hit>0)
             break;
 
-        $meta_list_name = double_metaphone($list_name);
+        $meta_list_name = $metaphone_function($list_name);
 
         if ($meta_name === $meta_list_name) {
             $female_hit = $weight;
@@ -185,7 +184,7 @@ function one_only_metaphone($name) {
         if ($male_hit>0)
             break;
 
-        $meta_list_name = double_metaphone($list_name);
+        $meta_list_name = $metaphone_function($list_name);
 
         if ($meta_name === $meta_list_name) {
             $male_hit = $weight;
@@ -211,14 +210,13 @@ function either_weight_metaphone($name) {
     global $DEBUG_MSG;
     global $Males;
     global $Females;
+    global $metaphone_function;
 
     $gender = null;
 
     // Match either, weight, use DoubleMetaphone
 
-    $meta_name = &double_metaphone($name);
-
-    $meta_name = double_metaphone($name);
+    $meta_name = $metaphone_function($name);
     $metaphone_hit = '';
 
     // Pete- Changed the original Perl code which did a copy of the name
@@ -234,7 +232,7 @@ function either_weight_metaphone($name) {
         if ($female_hit>0)
             break;
 
-        $meta_list_name = double_metaphone($list_name);
+        $meta_list_name = $metaphone_function($list_name);
 
         if ($meta_name === $meta_list_name) {
             $female_hit = $weight;
@@ -250,7 +248,7 @@ function either_weight_metaphone($name) {
         if ($male_hit>0)
             break;
 
-        $meta_list_name = double_metaphone($list_name);
+        $meta_list_name = $metaphone_function($list_name);
 
         if ($meta_name === $meta_list_name) {
             $male_hit = $weight;

@@ -40,7 +40,17 @@ if ($name!='') {
 
     $nameparts = explode(' ', $name);
     $firstname = $nameparts[0];
-    $result = gender($firstname, $strictness);
+
+    // get some name data
+    include('data/males.php');
+    include('data/females.php');
+
+    $result = GenderGuesser::init()
+        ->setFirstName($firstname)
+        ->setMaleFirstNames($Males)
+        ->setFemaleFirstNames($Females)
+        ->setSeverity($strictness)
+        ->guess();
 
     if (isset($result))
     {

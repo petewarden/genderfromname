@@ -2,6 +2,10 @@
 
 require_once('genderfromname.php');
 
+// get some name data
+include('data/males.php');
+include('data/females.php');
+
 $genders = array('Josephine' => 'f',
                'Michael' => 'm',
                'Dondi' => 'm',
@@ -21,51 +25,38 @@ $names = array('Josephine',
              'Eamon',
              'FLKMLKSJN');
 
-$MATCH_LIST[] = 'user_sub';
-
-$tests = $MATCH_LIST;
-
 print '<html><head><title>GenderFromName PHP module test</title></head><body>';
 
 // Test for Text::DoubleMetaphone. Skip those tests if not installed.
 
-if (!is_callable('double_metaphone'))
-{
-    print 'Skipping double_metaphone tests - module not found. See http://svn.php.net/viewvc/pecl/doublemetaphone/<br>';
-    foreach ($tests as $index => $function)
-    {
-        if (preg_match('/metaphone/', $function))
-            unset($tests[$index]);
-    }
-}
-
-$DEBUG = 1;
-
 $index = 0;
-foreach ($tests as $testname) {
-    // Test just this one rule.
-    $MATCH_LIST = array($testname);
+// Test just this one rule.
+$firstname = $names[$index];
+$secondname = $names[$index+1];
 
-    $firstname = $names[$index];
-    $secondname = $names[$index+1];
+$firstresult = GenderGuesser::init()
+    ->setFirstName($firstname)
+    ->setMaleFirstNames($Males)
+    ->setFemaleFirstNames($Females)
+    ->setSeverity(1)
+    ->debug()
+    ->guess();
 
-    $firstresult = gender($firstname);
-    $secondresult = gender($secondname);
+$secondresult = GenderGuesser::init()
+    ->setFirstName($secondname)
+    ->setMaleFirstNames($Males)
+    ->setFemaleFirstNames($Females)
+    ->setSeverity(1)
+    ->debug()
+    ->guess();
 
-    $firstexpected = $genders[$firstname];
-    $secondexpected = $genders[$secondname];
-    
-    print_result($testname, $firstname, $firstresult, $firstexpected);
-    print_result($testname, $secondname, $secondresult, $secondexpected);
-       
-    $index += 1;
-}
+$firstexpected = $genders[$firstname];
+$secondexpected = $genders[$secondname];
+
+print_result($testname, $firstname, $firstresult, $firstexpected);
+print_result($testname, $secondname, $secondresult, $secondexpected);
 
 print '</body></html>';
-
-function user_sub($name) {
-    if (preg_match('/^eamon/', $name)) return 'm';
-}
 
 function print_result($testname, $name, $result, $expected)
 {
@@ -82,5 +73,3 @@ function print_result($testname, $name, $result, $expected)
     }
 
 }
-
-?>
